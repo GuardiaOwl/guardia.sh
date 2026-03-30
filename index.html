@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardia — Your On-Chain Guardian</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06060f;
+  --bg-card: #0d0d1a;
+  --bg-card-hover: #12122a;
+  --accent: #00e5a0;
+  --accent-dim: #00e5a033;
+  --accent2: #6366f1;
+  --accent3: #f59e0b;
+  --text: #e8e8f0;
+  --text-dim: #6b6b8a;
+  --text-mid: #9b9bb8;
+  --border: #1a1a35;
+  --radius: 16px;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+::selection { background: rgba(0, 229, 160, 0.3); color: #fff; }
+::-moz-selection { background: rgba(0, 229, 160, 0.3); color: #fff; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ ANIMATED BG ============ */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, #00e5a008 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, #6366f108 0%, transparent 50%),
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+  pointer-events: none;
+}
+
+.glow-orb {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-orb.g1 { background: var(--accent); top: -200px; left: -100px; animation: float1 20s ease-in-out infinite; }
+.glow-orb.g2 { background: var(--accent2); bottom: -200px; right: -100px; animation: float2 25s ease-in-out infinite; }
+
+@keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(80px, 60px); } }
+@keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-60px, -80px); } }
+
+/* ============ LAYOUT ============ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+/* ============ NAV ============ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  backdrop-filter: blur(20px);
+  background: rgba(6, 6, 15, 0.8);
+  border-bottom: 1px solid var(--border);
+}
+nav .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  text-decoration: none;
+  color: var(--text);
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+.logo-wordmark span { color: var(--accent); }
+
+nav .links { display: flex; gap: 32px; align-items: center; }
+nav .links a { color: var(--text-mid); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+nav .links a:hover { color: var(--accent); }
+nav .links a.btn-chrome { color: #000; }
+nav .links a.btn-chrome:hover { color: #000; }
+
+.btn-chrome {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-chrome:hover { background: #00ffb3; transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-dim); }
+
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 80px;
+}
+.hero-content { max-width: 640px; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(0, 229, 160, 0.2);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 32px;
+  animation: fadeUp 0.6s ease-out;
+}
+
+h1 {
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.6s ease-out 0.1s both;
+}
+h1 .gradient {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 19px;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 520px;
+  animation: fadeUp 0.6s ease-out 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  animation: fadeUp 0.6s ease-out 0.3s both;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-visual {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 520px;
+  height: 520px;
+  animation: fadeUp 0.8s ease-out 0.4s both;
+}
+
+/* ============ CHAINS BAR ============ */
+.chains-bar {
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.chains-bar h3 {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+}
+.chains-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.chain-pill {
+  padding: 8px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.chain-pill:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.chain-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ============ FEATURES ============ */
+.features { padding: 120px 0; }
+.section-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.section-header h2 {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.section-header p {
+  font-size: 18px;
+  color: var(--text-mid);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.feature-card {
+  padding: 36px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feature-card:hover { border-color: rgba(0, 229, 160, 0.2); background: var(--bg-card-hover); transform: translateY(-4px); }
+.feature-card:hover::before { opacity: 1; }
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.fi-green { background: rgba(0, 229, 160, 0.12); }
+.fi-purple { background: rgba(99, 102, 241, 0.12); }
+.fi-amber { background: rgba(245, 158, 11, 0.12); }
+.fi-blue { background: rgba(56, 189, 248, 0.12); }
+.fi-pink { background: rgba(236, 72, 153, 0.12); }
+.fi-red { background: rgba(239, 68, 68, 0.12); }
+
+.feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.feature-card p { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* ============ HOW IT WORKS ============ */
+.how-it-works { padding: 120px 0; }
+
+.steps {
+  display: flex;
+  gap: 24px;
+  margin-top: 64px;
+}
+
+.step {
+  flex: 1;
+  padding: 36px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  top: -18px;
+  left: 28px;
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+}
+.step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; margin-top: 8px; }
+.step p { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+.step-code {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  overflow-x: auto;
+  white-space: nowrap;
+  border: 1px solid var(--border);
+}
+.step-code .dim { color: var(--text-dim); }
+.step-code .str { color: #f59e0b; }
+
+/* ============ TELEGRAM SECTION ============ */
+.telegram-section {
+  padding: 120px 0;
+  border-top: 1px solid var(--border);
+}
+.tg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.tg-phone {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.tg-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.tg-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--bg);
+}
+.tg-name { font-weight: 700; font-size: 15px; }
+.tg-status { font-size: 12px; color: var(--accent); }
+
+.tg-messages { display: flex; flex-direction: column; gap: 10px; }
+.tg-msg {
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 88%;
+  animation: msgAppear 0.4s ease-out both;
+}
+.tg-msg:nth-child(2) { animation-delay: 0.3s; }
+.tg-msg:nth-child(3) { animation-delay: 0.6s; }
+.tg-msg.bot {
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.tg-msg .tg-addr { color: var(--accent); font-family: var(--font-mono); font-size: 11px; }
+.tg-msg .tg-amount { color: var(--accent3); font-weight: 700; }
+.tg-msg .tg-chain { color: var(--accent2); }
+.tg-msg .tg-time { display: block; text-align: right; font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+
+@keyframes msgAppear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.tg-info h2 { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin-bottom: 20px; }
+.tg-info p { font-size: 16px; color: var(--text-mid); line-height: 1.8; margin-bottom: 16px; }
+.tg-features { list-style: none; padding: 0; }
+.tg-features li {
+  padding: 8px 0;
+  font-size: 15px;
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tg-features li::before {
+  content: '\2713';
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ============ CTA ============ */
+.cta {
+  padding: 120px 0;
+  text-align: center;
+}
+.cta-box {
+  padding: 80px 60px;
+  background: linear-gradient(135deg, rgba(0, 229, 160, 0.06), rgba(99, 102, 241, 0.06));
+  border: 1px solid rgba(0, 229, 160, 0.15);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-box h2 { font-size: 44px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.cta-box p { font-size: 18px; color: var(--text-mid); margin-bottom: 40px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+.cta-buttons { display: flex; justify-content: center; gap: 16px; }
+
+/* ============ FOOTER ============ */
+footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer p { font-size: 13px; color: var(--text-dim); }
+footer a { color: var(--accent); text-decoration: none; }
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .steps { flex-direction: column; }
+  .tg-grid { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  nav .links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="glow-orb g1"></div>
+<div class="glow-orb g2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <a href="#" class="logo">
+      <img class="logo-icon" src="icons/icon-128.png" alt="Guardia" style="background:none;">
+      <span class="logo-wordmark">Guar<span>dia</span></span>
+    </a>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#telegram">Telegram</a>
+      <a class="btn-chrome" href="#">Install Extension</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container" style="position:relative;">
+    <div class="hero-content">
+      <div class="hero-badge">Every dia, every chain</div>
+      <h1>Know Every<br><span class="gradient">Address</span></h1>
+      <p class="hero-sub">Tag wallets, detect poison transactions, get real-time alerts. One extension that turns raw hex into names, shields you from scams, and watches your addresses across 16+ chains.</p>
+      <div class="hero-actions">
+        <a class="btn-chrome" href="#">Add to Chrome — Free</a>
+        <a class="btn-outline" href="#how">See How It Works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAINS -->
+<section class="chains-bar">
+  <div class="container">
+    <h3>Protecting you on every Etherscan-family explorer</h3>
+    <div class="chains-row">
+      <div class="chain-pill"><div class="chain-dot" style="background:#627eea"></div> Ethereum</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#f3ba2f"></div> BSC</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#8247e5"></div> Polygon</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#28a0f0"></div> Arbitrum</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#0052ff"></div> Base</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#ff0420"></div> Optimism</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#e84142"></div> Avalanche</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#1969ff"></div> Fantom</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#53cbc8"></div> Sophon</div>
+      <div class="chain-pill"><div class="chain-dot" style="background:#aaa"></div> + more</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <h2>Tag. Protect. Monitor.</h2>
+      <p>Three layers of on-chain awareness in one lightweight extension</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon fi-green">&#127991;&#65039;</div>
+        <h3>Universal Tags</h3>
+        <p>Name any wallet once — it appears across every scanner. Etherscan, BscScan, Arbiscan, all of them. One address book, everywhere.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-red">&#128737;&#65039;</div>
+        <h3>Shield</h3>
+        <p>Detects and neutralizes poison transactions — dust spam, zero-value transfers, and lookalike scam addresses. Automatic protection on every page.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-amber">&#128242;</div>
+        <h3>Telegram Alerts</h3>
+        <p>Enable monitoring on any tagged address and get instant Telegram notifications when it sends, receives, or swaps tokens across all chains.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-blue">&#128274;</div>
+        <h3>Clipboard Shield</h3>
+        <p>Copy an address and Guardia checks it against your address book. Instant warning if you're about to paste a lookalike scam address.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-purple">&#128260;</div>
+        <h3>Cross-Device Sync</h3>
+        <p>Your address book syncs across all browsers and devices. Log in on a new machine — all your tags, notes, and categories are already there.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-pink">&#127912;</div>
+        <h3>Visual Badges</h3>
+        <p>Tagged addresses get color-coded gradient badges by category. My Wallets in green, Exchanges in blue, Suspicious in red — recognizable at a glance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works" id="how">
+  <div class="container">
+    <div class="section-header">
+      <h2>How Guardia protects you</h2>
+      <p>Scammers plant fake transactions in your history hoping you'll copy the wrong address. Guardia stops that.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>The attack</h3>
+        <p>A scammer sends a $0 transaction from an address that looks almost identical to yours. It shows up in your history — bait for your next copy-paste.</p>
+        <div class="step-code">
+          <span style="color:#ef4444">0xd8dA...96045</span> <span class="dim">// scammer (lookalike)</span><br>
+          <span style="color:var(--accent)">0xd8dA...96045</span> <span class="dim">// you (real)</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Instant detection</h3>
+        <p>Guardia has learned to recognize these poisoning patterns. The moment a page loads, every suspicious transaction is identified and blocked — no configuration needed.</p>
+        <div class="step-code">
+          <span class="dim">// page loaded:</span><br>
+          &#128737;&#65039; <span style="color:var(--accent)">Shield active</span> <span class="dim">—</span> <span style="color:#ef4444">31 threats detected</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Your choice of protection</h3>
+        <p>Pick how threats are handled. <b>Guard</b> mode hides poison transactions completely — they vanish from the page. <b>Scan</b> mode highlights them in red so you can inspect them yourself.</p>
+        <div class="step-code">
+          <span class="dim">// toggle modes:</span><br>
+          &#128274; <span class="str">Guard</span> <span class="dim">— threats hidden</span><br>
+          &#128270; <span class="str">Scan</span> <span class="dim">— threats highlighted</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TELEGRAM -->
+<section class="telegram-section" id="telegram">
+  <div class="container">
+    <div class="tg-grid">
+      <div class="tg-phone">
+        <div class="tg-header">
+          <div class="tg-avatar"><img src="icons/icon-48.png" alt="G" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
+          <div>
+            <div class="tg-name">Guardia Alerts</div>
+            <div class="tg-status">online</div>
+          </div>
+        </div>
+        <div class="tg-messages">
+          <div class="tg-msg bot">
+            &#128176; <b>Vitalik</b> received <span class="tg-amount">50,000 USDC</span> on <span class="tg-chain">Ethereum</span><br>
+            <span class="tg-addr">from 0x28C6...9e21</span>
+            <span class="tg-time">14:32</span>
+          </div>
+          <div class="tg-msg bot">
+            &#128260; <b>My Wallet</b> swapped <span class="tg-amount">2.5 ETH</span> &#8594; <span class="tg-amount">4,800 USDC</span> on <span class="tg-chain">Arbitrum</span><br>
+            <span class="tg-addr">via 1inch Router</span>
+            <span class="tg-time">14:35</span>
+          </div>
+          <div class="tg-msg bot">
+            &#9888;&#65039; <b>Whale Alert</b> moved <span class="tg-amount">1,000,000 USDT</span> on <span class="tg-chain">BSC</span><br>
+            <span class="tg-addr">to Binance Hot Wallet</span>
+            <span class="tg-time">14:41</span>
+          </div>
+        </div>
+      </div>
+      <div class="tg-info">
+        <h2>Your wallets,<br>in your Telegram</h2>
+        <p>Enable monitoring on any tagged address and Guardia Bot sends you real-time notifications directly in Telegram — no extra apps, no dashboards to check.</p>
+        <ul class="tg-features">
+          <li>Real-time transaction alerts across all EVM chains</li>
+          <li>Token transfers, swaps, and contract interactions</li>
+          <li>Spam-filtered — low-value dust and junk tokens are ignored</li>
+          <li>Monitor any tagged address with one click</li>
+          <li>One-click Telegram login — connect in seconds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Every dia, every chain</h2>
+      <p>Tag addresses, detect scams, get alerts. Free forever for personal use.</p>
+      <div class="cta-buttons">
+        <a class="btn-chrome" href="#" style="font-size:16px;padding:14px 28px;">Install Guardia for Chrome</a>
+        <a class="btn-outline" href="https://t.me/GuardiaAlertsBot" style="font-size:16px;padding:14px 28px;">&#128242; Telegram Bot</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p style="margin-bottom:8px;">Guardia — Every dia, every chain</p>
+    <p><a href="/privacy.html">Privacy Policy</a> &middot; <a href="https://github.com/GuardiaOwl">GitHub</a> &middot; <a href="#">Chrome Web Store</a> &middot; <a href="https://t.me/GuardiaAlertsBot">Telegram</a> &middot; <a href="https://x.com/GuardiaOwl">Twitter</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

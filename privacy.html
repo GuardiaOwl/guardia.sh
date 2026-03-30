@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardia — Privacy Policy</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06060f;
+  --bg-card: #0d0d1a;
+  --bg-card-hover: #12122a;
+  --accent: #00e5a0;
+  --accent-dim: #00e5a033;
+  --accent2: #6366f1;
+  --text: #e8e8f0;
+  --text-dim: #6b6b8a;
+  --text-mid: #9b9bb8;
+  --border: #1a1a35;
+  --radius: 16px;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+::selection { background: rgba(0, 229, 160, 0.3); color: #fff; }
+::-moz-selection { background: rgba(0, 229, 160, 0.3); color: #fff; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ ANIMATED BG ============ */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, #00e5a008 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, #6366f108 0%, transparent 50%),
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+  pointer-events: none;
+}
+
+.glow-orb {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-orb.g1 { background: var(--accent); top: -200px; left: -100px; animation: float1 20s ease-in-out infinite; }
+.glow-orb.g2 { background: var(--accent2); bottom: -200px; right: -100px; animation: float2 25s ease-in-out infinite; }
+
+@keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(80px, 60px); } }
+@keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-60px, -80px); } }
+
+/* ============ LAYOUT ============ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+/* ============ NAV ============ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  backdrop-filter: blur(20px);
+  background: rgba(6, 6, 15, 0.8);
+  border-bottom: 1px solid var(--border);
+}
+nav .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  text-decoration: none;
+  color: var(--text);
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+.logo-wordmark span { color: var(--accent); }
+
+nav .links { display: flex; gap: 32px; align-items: center; }
+nav .links a { color: var(--text-mid); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+nav .links a:hover { color: var(--accent); }
+
+/* ============ CONTENT ============ */
+.privacy-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 140px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.privacy-content h1 {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+
+.updated {
+  color: var(--text-dim);
+  font-size: 15px;
+  margin-bottom: 56px;
+}
+
+.privacy-content h2 {
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 48px 0 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.privacy-content h2:first-of-type {
+  border-top: none;
+  margin-top: 0;
+}
+
+.privacy-content p {
+  color: var(--text-mid);
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.privacy-content b { color: var(--text); }
+.privacy-content a { color: var(--accent); text-decoration: none; }
+.privacy-content a:hover { text-decoration: underline; }
+
+.privacy-content code {
+  background: var(--bg-card);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* ============ FOOTER ============ */
+footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer p { font-size: 13px; color: var(--text-dim); }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="glow-orb g1"></div>
+<div class="glow-orb g2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <a href="/" class="logo">
+      <img class="logo-icon" src="icons/icon-128.png" alt="Guardia" style="background:none;">
+      <span class="logo-wordmark">Guar<span>dia</span></span>
+    </a>
+    <div class="links">
+      <a href="/">&larr; Back to Home</a>
+    </div>
+  </div>
+</nav>
+
+<div class="privacy-content">
+
+<h1>Privacy Policy</h1>
+<p class="updated">Last updated: March 2026</p>
+
+<h2>What we collect</h2>
+<p>Guardia stores your address tags, categories, and notes <b>locally in your browser</b> using Chrome Storage. This data never leaves your device unless you explicitly export it.</p>
+<p>If you enable Telegram monitoring, we store the monitored wallet addresses and your Telegram ID on our server solely to deliver real-time notifications.</p>
+
+<h2>What we don't collect</h2>
+<p>We do not collect browsing history, page content, private keys, seed phrases, passwords, or any financial data. Guardia has no access to your funds — it only reads publicly available data displayed on block explorer pages.</p>
+
+<h2>Shield (threat detection)</h2>
+<p>Shield analysis runs entirely in your browser. Transaction data is analyzed locally using pattern matching — nothing is sent to external servers. No transaction history or page content leaves your device.</p>
+
+<h2>Telegram integration</h2>
+<p>When you enable monitoring for an address, we store that address and your Telegram chat ID on our server to send notifications. You can disable monitoring or delete your account at any time — all associated server-side data is removed immediately.</p>
+
+<h2>Data export &amp; deletion</h2>
+<p>You can export all your data (tags, categories, notes) as JSON at any time from the extension Settings. To delete all local data, uninstall the extension — all Chrome storage is cleared automatically. For server-side data (monitored addresses, Telegram link), use the logout option in Settings.</p>
+
+<h2>Third parties</h2>
+<p>We do not sell, share, or transfer your data to any third parties. We use Google Fonts for typography on our website. The extension itself makes no third-party requests beyond the Guardia API (for monitoring features only).</p>
+
+<h2>Permissions</h2>
+<p>Guardia requests minimal Chrome permissions:</p>
+<p><code>storage</code> — save your tags and preferences locally<br>
+<code>activeTab</code> — read the current block explorer page to tag addresses and detect threats<br>
+<code>clipboardRead</code> — clipboard protection against address swapping attacks</p>
+<p>Content scripts only run on supported block explorer domains (Etherscan, BscScan, PolygonScan, and 16 others).</p>
+
+<h2>Contact</h2>
+<p>Questions about privacy? Reach us via <a href="https://t.me/GuardiaAlertsBot">Telegram</a>, email at <a href="mailto:info@guardia.sh">info@guardia.sh</a>, or open an issue on <a href="https://github.com/GuardiaOwl">GitHub</a>.</p>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p style="margin-bottom:8px;">Guardia — Every dia, every chain</p>
+    <p><a href="/">Home</a> &middot; <a href="https://github.com/GuardiaOwl">GitHub</a> &middot; <a href="#">Chrome Web Store</a> &middot; <a href="https://t.me/GuardiaAlertsBot">Telegram</a> &middot; <a href="https://x.com/GuardiaOwl">Twitter</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

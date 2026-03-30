@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardia — Login with Telegram</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06060f;
+  --bg-card: #0d0d1a;
+  --accent: #00e5a0;
+  --accent2: #6366f1;
+  --text: #e8e8f0;
+  --text-dim: #6b6b8a;
+  --text-mid: #9b9bb8;
+  --border: #1a1a35;
+  --font: 'Outfit', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, #00e5a008 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, #6366f108 0%, transparent 50%);
+}
+.card {
+  position: relative; z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+}
+.logo {
+  width: 72px; height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 16px;
+}
+.brand {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.brand span { color: var(--accent); }
+.subtitle {
+  color: var(--text-mid);
+  font-size: 14px;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+.step {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+.step b { color: var(--text); }
+.telegram-widget {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+.status {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  display: none;
+}
+.status.success {
+  display: block;
+  background: rgba(0, 229, 160, 0.1);
+  border: 1px solid rgba(0, 229, 160, 0.3);
+  color: var(--accent);
+}
+.status.error {
+  display: block;
+  background: rgba(255, 77, 106, 0.1);
+  border: 1px solid rgba(255, 77, 106, 0.3);
+  color: #ff4d6a;
+}
+.status.loading {
+  display: block;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--accent2);
+}
+.close-hint {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin-top: 12px;
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="card">
+  <img src="icons/icon-128.png" alt="Guardia" class="logo">
+  <div class="brand">Guar<span>dia</span></div>
+  <div class="subtitle">Connect your Telegram account to receive<br>real-time alerts when your wallets move funds.</div>
+
+  <div class="step">Click the button below to authenticate with <b>Telegram</b></div>
+
+  <div class="telegram-widget" id="widgetWrap">
+    <!-- Telegram Login Widget injected here -->
+  </div>
+
+  <div class="status" id="status"></div>
+  <div class="close-hint" id="closeHint" style="display:none">You can close this tab and return to the extension.</div>
+</div>
+
+<script>
+var BACKEND = 'https://api.guardia.sh';
+var BOT_USERNAME = 'GuardiaAlertsBot';
+
+// Telegram Login Widget callback
+function onTelegramAuth(user) {
+  var st = document.getElementById('status');
+  st.className = 'status loading';
+  st.textContent = 'Verifying with Guardia server...';
+
+  fetch(BACKEND + '/auth/telegram/verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user),
+  })
+  .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+  .then(function (res) {
+    if (!res.ok) {
+      st.className = 'status error';
+      st.textContent = res.data.error || 'Verification failed';
+      return;
+    }
+
+    st.className = 'status success';
+    st.textContent = 'Connected as @' + (res.data.user.username || res.data.user.first_name || 'User');
+    document.getElementById('closeHint').style.display = 'block';
+
+    // Send auth data to extension via postMessage
+    // Content script on guardia.sh will pick this up
+    window.postMessage({
+      type: 'guardia_auth_success',
+      user: {
+        id: String(res.data.user.telegramId),
+        username: res.data.user.username || res.data.user.first_name || 'User',
+        photo: res.data.user.photo_url || null,
+        apiToken: res.data.apiToken,
+      },
+    }, '*');
+  })
+  .catch(function (err) {
+    st.className = 'status error';
+    st.textContent = 'Connection error. Please try again.';
+    console.error('Auth error:', err);
+  });
+}
+
+// Inject Telegram Login Widget
+(function () {
+  var script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://telegram.org/js/telegram-widget.js?22';
+  script.setAttribute('data-telegram-login', BOT_USERNAME);
+  script.setAttribute('data-size', 'large');
+  script.setAttribute('data-radius', '12');
+  script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  script.setAttribute('data-request-access', 'write');
+  document.getElementById('widgetWrap').appendChild(script);
+})();
+</script>
+</body>
+</html>
