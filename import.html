@@ -218,6 +218,14 @@ nav .links a:hover { color: var(--accent); }
   padding: 12px 16px;
   font-size: 14px;
   color: var(--text-mid);
+  text-decoration: none;
+  display: block;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.explorer-item:hover {
+  border-color: var(--accent-dim);
+  background: var(--bg-card-hover);
 }
 
 .explorer-item b { color: var(--text); }
@@ -274,12 +282,12 @@ footer a { color: var(--accent); text-decoration: none; }
 
 <div class="step-card">
   <div class="step-title"><span class="step-number">1</span>Install Guardia</div>
-  <div class="step-text">If you haven't already, add the Guardia extension to your browser from the Chrome Web Store.</div>
+  <div class="step-text">If you haven't already, <a href="https://chromewebstore.google.com" target="_blank">add the Guardia extension</a> to your browser from the Chrome Web Store.</div>
 </div>
 
 <div class="step-card">
   <div class="step-title"><span class="step-number">2</span>Go to your Private Name Tags</div>
-  <div class="step-text">Log into your Etherscan (or any supported explorer) account. Navigate to your profile and find <b>Private Name Tags</b> in the sidebar under "Lists". The direct URL is usually:<br><code>etherscan.io/mynotes_address</code></div>
+  <div class="step-text">Log into your Etherscan (or any supported explorer) account. Navigate to your profile and find <b>Private Name Tags</b> in the sidebar under "Lists". The direct URL is usually:<br><a href="https://etherscan.io/mynotes_address" target="_blank"><code>etherscan.io/mynotes_address</code></a></div>
 </div>
 
 <div class="step-card">
@@ -300,18 +308,18 @@ footer a { color: var(--accent); text-decoration: none; }
 <p>You can import Private Name Tags from any Etherscan-family explorer:</p>
 
 <div class="explorer-grid">
-  <div class="explorer-item"><b>Etherscan</b> — Ethereum</div>
-  <div class="explorer-item"><b>BscScan</b> — BNB Chain</div>
-  <div class="explorer-item"><b>PolygonScan</b> — Polygon</div>
-  <div class="explorer-item"><b>Arbiscan</b> — Arbitrum</div>
-  <div class="explorer-item"><b>BaseScan</b> — Base</div>
-  <div class="explorer-item"><b>Optimistic</b> — Optimism</div>
-  <div class="explorer-item"><b>SnowScan</b> — Avalanche</div>
-  <div class="explorer-item"><b>LineaScan</b> — Linea</div>
-  <div class="explorer-item"><b>ScrollScan</b> — Scroll</div>
-  <div class="explorer-item"><b>GnosisScan</b> — Gnosis</div>
-  <div class="explorer-item"><b>FtmScan</b> — Fantom</div>
-  <div class="explorer-item"><b>CeloScan</b> — Celo</div>
+  <a class="explorer-item" href="https://etherscan.io/mynotes_address" target="_blank"><b>Etherscan</b> — Ethereum</a>
+  <a class="explorer-item" href="https://bscscan.com/mynotes_address" target="_blank"><b>BscScan</b> — BNB Chain</a>
+  <a class="explorer-item" href="https://polygonscan.com/mynotes_address" target="_blank"><b>PolygonScan</b> — Polygon</a>
+  <a class="explorer-item" href="https://arbiscan.io/mynotes_address" target="_blank"><b>Arbiscan</b> — Arbitrum</a>
+  <a class="explorer-item" href="https://basescan.org/mynotes_address" target="_blank"><b>BaseScan</b> — Base</a>
+  <a class="explorer-item" href="https://optimistic.etherscan.io/mynotes_address" target="_blank"><b>Optimistic</b> — Optimism</a>
+  <a class="explorer-item" href="https://snowscan.xyz/mynotes_address" target="_blank"><b>SnowScan</b> — Avalanche</a>
+  <a class="explorer-item" href="https://lineascan.build/mynotes_address" target="_blank"><b>LineaScan</b> — Linea</a>
+  <a class="explorer-item" href="https://scrollscan.com/mynotes_address" target="_blank"><b>ScrollScan</b> — Scroll</a>
+  <a class="explorer-item" href="https://gnosisscan.io/mynotes_address" target="_blank"><b>GnosisScan</b> — Gnosis</a>
+  <a class="explorer-item" href="https://ftmscan.com/mynotes_address" target="_blank"><b>FtmScan</b> — Fantom</a>
+  <a class="explorer-item" href="https://celoscan.io/mynotes_address" target="_blank"><b>CeloScan</b> — Celo</a>
 </div>
 
 <p>All these explorers use the same page structure, so Guardia works identically on each one.</p>
