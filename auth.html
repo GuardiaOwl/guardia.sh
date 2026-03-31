@@ -8,34 +8,20 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-:root {
-  --bg: #06060f;
-  --bg-card: #0d0d1a;
-  --accent: #00e5a0;
-  --accent2: #6366f1;
-  --text: #e8e8f0;
-  --text-dim: #6b6b8a;
-  --text-mid: #9b9bb8;
-  --border: #1a1a35;
-  --font: 'Outfit', sans-serif;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  -webkit-font-smoothing: antialiased;
+  overflow-x: visible;
 }
 .bg-grid {
-  position: fixed; inset: 0; z-index: 0;
   background-image:
     radial-gradient(circle at 20% 30%, #00e5a008 0%, transparent 50%),
     radial-gradient(circle at 80% 70%, #6366f108 0%, transparent 50%);
+  background-size: 100% 100%, 100% 100%;
 }
 .card {
   position: relative; z-index: 1;
@@ -48,9 +34,13 @@ body {
   text-align: center;
 }
 .logo {
+  display: block;
   width: 72px; height: 72px;
   margin: 0 auto 16px;
   border-radius: 16px;
+  gap: 0;
+  font-size: inherit;
+  font-weight: inherit;
 }
 .brand {
   font-size: 28px;
