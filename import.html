@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardia — Import Your Addresses</title>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06060f;
+  --bg-card: #0d0d1a;
+  --bg-card-hover: #12122a;
+  --accent: #00e5a0;
+  --accent-dim: #00e5a033;
+  --accent2: #6366f1;
+  --text: #e8e8f0;
+  --text-dim: #6b6b8a;
+  --text-mid: #9b9bb8;
+  --border: #1a1a35;
+  --radius: 16px;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+::selection { background: rgba(0, 229, 160, 0.3); color: #fff; }
+::-moz-selection { background: rgba(0, 229, 160, 0.3); color: #fff; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, #00e5a008 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, #6366f108 0%, transparent 50%),
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+  pointer-events: none;
+}
+
+.glow-orb {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-orb.g1 { background: var(--accent); top: -200px; left: -100px; animation: float1 20s ease-in-out infinite; }
+.glow-orb.g2 { background: var(--accent2); bottom: -200px; right: -100px; animation: float2 25s ease-in-out infinite; }
+
+@keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(80px, 60px); } }
+@keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-60px, -80px); } }
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  backdrop-filter: blur(20px);
+  background: rgba(6, 6, 15, 0.8);
+  border-bottom: 1px solid var(--border);
+}
+nav .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  text-decoration: none;
+  color: var(--text);
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+.logo-wordmark span { color: var(--accent); }
+
+nav .links { display: flex; gap: 32px; align-items: center; }
+nav .links a { color: var(--text-mid); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+nav .links a:hover { color: var(--accent); }
+
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 140px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.content h1 {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+
+.content h1 span { color: var(--accent); }
+
+.subtitle {
+  color: var(--text-dim);
+  font-size: 17px;
+  margin-bottom: 56px;
+  line-height: 1.6;
+}
+
+.content h2 {
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 48px 0 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.content h2:first-of-type {
+  border-top: none;
+  margin-top: 0;
+}
+
+.content p {
+  color: var(--text-mid);
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.content b { color: var(--text); }
+.content a { color: var(--accent); text-decoration: none; }
+.content a:hover { text-decoration: underline; }
+
+.content code {
+  background: var(--bg-card);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+.step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+.step-card:hover { border-color: var(--accent-dim); }
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 800;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.step-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.step-text {
+  color: var(--text-mid);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.explorer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.explorer-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text-mid);
+}
+
+.explorer-item b { color: var(--text); }
+
+.tip-box {
+  background: var(--accent-dim);
+  border: 1px solid rgba(0, 229, 160, 0.15);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+
+.tip-box p {
+  color: var(--text);
+  font-size: 14px;
+  margin: 0;
+}
+
+.tip-box b { color: var(--accent); }
+
+footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer p { font-size: 13px; color: var(--text-dim); }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="glow-orb g1"></div>
+<div class="glow-orb g2"></div>
+
+<nav>
+  <div class="inner">
+    <a href="/" class="logo">
+      <img class="logo-icon" src="icons/icon-128.png" alt="Guardia" style="background:none;">
+      <span class="logo-wordmark">Guar<span>dia</span></span>
+    </a>
+    <div class="links">
+      <a href="/">&larr; Back to Home</a>
+    </div>
+  </div>
+</nav>
+
+<div class="content">
+
+<h1>Import your <span>addresses</span></h1>
+<p class="subtitle">Already have Private Name Tags saved on Etherscan or other EVM explorers? Import them into Guardia in seconds — no typing, no copy-pasting.</p>
+
+<h2>How it works</h2>
+
+<div class="step-card">
+  <div class="step-title"><span class="step-number">1</span>Install Guardia</div>
+  <div class="step-text">If you haven't already, add the Guardia extension to your browser from the Chrome Web Store.</div>
+</div>
+
+<div class="step-card">
+  <div class="step-title"><span class="step-number">2</span>Go to your Private Name Tags</div>
+  <div class="step-text">Log into your Etherscan (or any supported explorer) account. Navigate to your profile and find <b>Private Name Tags</b> in the sidebar under "Lists". The direct URL is usually:<br><code>etherscan.io/mynotes_address</code></div>
+</div>
+
+<div class="step-card">
+  <div class="step-title"><span class="step-number">3</span>Open Guardia</div>
+  <div class="step-text">Click the Guardia icon in your browser toolbar while on the Private Name Tags page. Guardia will automatically detect the page and switch to <b>Import mode</b>.</div>
+</div>
+
+<div class="step-card">
+  <div class="step-title"><span class="step-number">4</span>Review and import</div>
+  <div class="step-text">Guardia scans all pages of your saved addresses automatically (even if you have 10+ pages). Review the list, deselect any you don't want, and click <b>Import Selected</b>. Done!</div>
+</div>
+
+<div class="tip-box">
+  <p><b>Tip:</b> Guardia imports your Private Name Tags as address names and your Notes as memos. After import, all your tags will appear across every supported explorer — not just the one you imported from.</p>
+</div>
+
+<h2>Supported explorers</h2>
+<p>You can import Private Name Tags from any Etherscan-family explorer:</p>
+
+<div class="explorer-grid">
+  <div class="explorer-item"><b>Etherscan</b> — Ethereum</div>
+  <div class="explorer-item"><b>BscScan</b> — BNB Chain</div>
+  <div class="explorer-item"><b>PolygonScan</b> — Polygon</div>
+  <div class="explorer-item"><b>Arbiscan</b> — Arbitrum</div>
+  <div class="explorer-item"><b>BaseScan</b> — Base</div>
+  <div class="explorer-item"><b>Optimistic</b> — Optimism</div>
+  <div class="explorer-item"><b>SnowScan</b> — Avalanche</div>
+  <div class="explorer-item"><b>LineaScan</b> — Linea</div>
+  <div class="explorer-item"><b>ScrollScan</b> — Scroll</div>
+  <div class="explorer-item"><b>GnosisScan</b> — Gnosis</div>
+  <div class="explorer-item"><b>FtmScan</b> — Fantom</div>
+  <div class="explorer-item"><b>CeloScan</b> — Celo</div>
+</div>
+
+<p>All these explorers use the same page structure, so Guardia works identically on each one.</p>
+
+<h2>FAQ</h2>
+
+<p><b>Does Guardia access my explorer account?</b><br>
+No. Guardia only reads the address list that's already visible on the page. It never accesses your login credentials or account settings.</p>
+
+<p><b>What if I have addresses on multiple explorers?</b><br>
+Import from each one separately. Guardia deduplicates automatically — if the same address exists on Etherscan and BscScan, it won't create duplicates.</p>
+
+<p><b>Can I undo an import?</b><br>
+Yes. Go to the Tags tab, find any imported address, and delete it. You can also export your full tag list from Settings before importing, just in case.</p>
+
+<p><b>Do imported tags sync back to Etherscan?</b><br>
+No. Guardia is a separate system. Your tags live locally in your browser and work across all supported explorers simultaneously.</p>
+
+</div>
+
+<footer>
+  <p>Guardia &mdash; Every dia, every chain. &nbsp;|&nbsp; <a href="/">Home</a> &nbsp;|&nbsp; <a href="/privacy.html">Privacy</a></p>
+</footer>
+
+</body>
+</html>
