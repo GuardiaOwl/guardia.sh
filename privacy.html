@@ -119,15 +119,38 @@
 <p>Content scripts only run on supported block explorer domains (Etherscan, BscScan, PolygonScan, and 16 others).</p>
 
 <h2>Disclaimer &amp; Limitation of Liability</h2>
-<p>Guardia is a security tool designed to help users identify potentially fraudulent transactions on EVM block explorers. While our detection algorithms cover the vast majority of known address poisoning patterns, <strong>no automated system can guarantee 100% detection of all threats.</strong></p>
-<p><strong>The absence of a warning does not mean a transaction or address is safe.</strong> If Guardia does not flag a particular transaction, it does not constitute an endorsement, guarantee, or recommendation that the address is legitimate or trustworthy. Always verify addresses independently before sending funds.</p>
-<p><strong>Guardia is provided "as is" without warranties of any kind.</strong> We do not accept any financial responsibility or liability for:</p>
+
+<p>Guardia is a security tool designed to help users identify potentially fraudulent transactions on EVM block explorers. <strong>Guardia is provided "as is" without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.</strong></p>
+
+<h3>No guarantee of detection</h3>
+<p>While our detection algorithms cover the vast majority of known address poisoning patterns, <strong>no automated system can guarantee 100% detection of all threats.</strong> The absence of a warning does not mean a transaction or address is safe. If Guardia does not flag a particular transaction, it does not constitute an endorsement, guarantee, or recommendation that the address is legitimate or trustworthy.</p>
+
+<h3>False positives</h3>
+<p>Guardia may occasionally flag legitimate transactions as suspicious (false positives). Our detection is based on pattern analysis — certain legitimate transactions may match patterns commonly associated with address poisoning (e.g., small-value transfers, addresses with similar prefixes). <strong>A flagged transaction is not necessarily fraudulent.</strong> If Shield hides a transaction in "Guard" mode, you can switch to "Scan" mode to review all flagged transactions. Users should exercise their own judgment and verify flagged transactions independently before taking action.</p>
+
+<h3>Hidden transactions</h3>
+<p>When Shield is set to "Guard" (hide) mode, flagged transactions are visually hidden from the page. <strong>Guardia does not delete, modify, or interfere with any blockchain data or explorer functionality.</strong> Hidden transactions still exist on the page and can be revealed at any time by switching to "Scan" mode or disabling Shield. We are not liable for any consequences arising from transactions being hidden from view, including missed legitimate transfers.</p>
+
+<h3>Financial liability</h3>
+<p><strong>We do not accept any financial responsibility or liability for:</strong></p>
 <p>&bull; Losses resulting from transactions made by the user, whether or not Guardia flagged the involved addresses<br>
 &bull; Losses caused by new, unknown, or evolving attack patterns not yet covered by our detection algorithms<br>
 &bull; Losses resulting from the user ignoring or dismissing warnings provided by Guardia<br>
+&bull; Losses or missed opportunities caused by legitimate transactions being incorrectly flagged<br>
+&bull; Losses caused by transactions hidden in Guard mode that the user did not review<br>
 &bull; Any damages arising from reliance on the extension as a sole security measure</p>
-<p><strong>You are solely responsible for your own financial decisions.</strong> Guardia is an additional layer of protection — not a replacement for due diligence. We strongly recommend verifying recipient addresses through multiple independent sources before completing any transaction.</p>
-<p>By using Guardia, you acknowledge and agree that the extension is an assistive tool and that all transactions are made at your own risk.</p>
+
+<h3>Data and reliability</h3>
+<p>Tag data is stored locally in your browser. <strong>We are not responsible for data loss</strong> caused by browser updates, clearing browser data, reinstalling the extension, or any other circumstance. We recommend using the Export feature regularly to back up your tags. Telegram monitoring alerts are delivered on a best-effort basis — we do not guarantee delivery time, completeness, or availability of the alert service.</p>
+
+<h3>Compatibility</h3>
+<p>Guardia modifies the visual presentation of supported block explorer pages. We do not guarantee compatibility with other browser extensions, custom scripts, or modified browser configurations. If you experience issues, try disabling other extensions to isolate the cause.</p>
+
+<h3>Your responsibility</h3>
+<p><strong>You are solely responsible for your own financial decisions.</strong> Guardia is an additional layer of protection — not a replacement for due diligence. We strongly recommend verifying recipient addresses through multiple independent sources before completing any transaction. By using Guardia, you acknowledge and agree that the extension is an assistive tool and that all transactions are made at your own risk.</p>
+
+<h3>Indemnification</h3>
+<p>By using Guardia, you agree to indemnify and hold harmless Guardia Labs, its contributors, and affiliates from any claims, damages, losses, or expenses arising from your use of the extension or any violation of these terms.</p>
 
 <h2>Contact</h2>
 <p>Questions about privacy? Reach us via <a href="https://t.me/GuardiaOwlChat">Telegram</a> or open an issue on <a href="https://github.com/GuardiaOwl">GitHub</a>.</p>
