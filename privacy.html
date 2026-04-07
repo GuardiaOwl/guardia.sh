@@ -90,33 +90,38 @@
 <div class="privacy-content">
 
 <h1>Privacy Policy</h1>
-<p class="updated">Last updated: March 2026</p>
+<p class="updated">Last updated: April 2026</p>
 
 <h2>What we collect</h2>
-<p>Guardia stores your address tags, categories, and notes <b>locally in your browser</b> using Chrome Storage. This data never leaves your device unless you explicitly export it.</p>
-<p>If you enable Telegram monitoring, we store the monitored wallet addresses and your Telegram ID on our server solely to deliver real-time notifications.</p>
+<p>Guardia stores your address tags, categories, notes, and blocked tokens <b>locally in your browser</b> using Chrome Storage.</p>
+<p>When you log in with Telegram, your wallet tags are <b>synced to our server</b> so your data persists across browsers and devices. Local data always takes priority in case of conflicts.</p>
+<p>If you enable Telegram monitoring for specific addresses, we store those addresses and your Telegram chat ID on our server solely to deliver real-time transaction notifications.</p>
 
 <h2>What we don't collect</h2>
-<p>We do not collect browsing history, page content, private keys, seed phrases, passwords, or any financial data. Guardia has no access to your funds — it only reads publicly available data displayed on block explorer pages.</p>
+<p>We do not collect browsing history, page content, private keys, seed phrases, passwords, or any financial data. Guardia has no access to your funds — it only reads publicly available data displayed on block explorer pages. We do not use analytics, tracking pixels, or any form of user behavior monitoring.</p>
 
 <h2>Shield (threat detection)</h2>
-<p>Shield analysis runs entirely in your browser. Transaction data is analyzed locally using pattern matching — nothing is sent to external servers. No transaction history or page content leaves your device.</p>
+<p>Shield analysis runs entirely in your browser. Transaction data is analyzed locally using pattern matching — nothing is sent to external servers. No transaction history or page content leaves your device. The token blacklist (tokens you manually block) is also stored locally.</p>
 
 <h2>Telegram integration</h2>
-<p>When you enable monitoring for an address, we store that address and your Telegram chat ID on our server to send notifications. You can disable monitoring or delete your account at any time — all associated server-side data is removed immediately.</p>
+<p>When you enable monitoring for an address, we store that address and your Telegram chat ID on our server to send notifications. Monitoring is available on 8 EVM chains (Ethereum, BSC, Polygon, Arbitrum, Base, Optimism, Avalanche, Hyperliquid). You can disable monitoring or delete your account at any time — all associated server-side data is removed immediately.</p>
+
+<h2>Import from explorers</h2>
+<p>Guardia can import your Private Name Tags from block explorer pages (e.g., Etherscan). This process runs entirely in your browser — page content is read by the content script and never sent to any server. Imported data is saved to your local Chrome Storage.</p>
 
 <h2>Data export &amp; deletion</h2>
-<p>You can export all your data (tags, categories, notes) as JSON at any time from the extension Settings. To delete all local data, uninstall the extension — all Chrome storage is cleared automatically. For server-side data (monitored addresses, Telegram link), use the logout option in Settings.</p>
+<p>You can export all your data (tags, categories, notes) as CSV or JSON at any time from the extension Settings. To delete all data — both local and server-side — use the <b>"Delete all data &amp; logout"</b> button in Settings. This permanently removes all wallet tags, blocked tokens, monitoring subscriptions, and your account from our server. Alternatively, uninstalling the extension clears all local Chrome storage automatically.</p>
 
 <h2>Third parties</h2>
-<p>We do not sell, share, or transfer your data to any third parties. We use Google Fonts for typography on our website. The extension itself makes no third-party requests beyond the Guardia API (for monitoring features only).</p>
+<p>We do not sell, share, or transfer your data to any third parties. We use Google Fonts for typography on our website. The extension itself makes no third-party requests beyond the Guardia API (for authentication, wallet sync, and monitoring features).</p>
 
 <h2>Permissions</h2>
 <p>Guardia requests minimal Chrome permissions:</p>
-<p><code>storage</code> — save your tags and preferences locally<br>
-<code>activeTab</code> — read the current block explorer page to tag addresses and detect threats<br>
-<code>clipboardRead</code> — clipboard protection against address swapping attacks</p>
-<p>Content scripts only run on supported block explorer domains (Etherscan, BscScan, PolygonScan, and 16 others).</p>
+<p><code>storage</code> — save your tags, settings, and blocked tokens locally<br>
+<code>activeTab</code> — read the current block explorer page to detect which address you are viewing<br>
+<code>tabs</code> — communicate between the popup and content scripts for real-time Shield updates and wallet sync<br>
+<code>clipboardRead</code> — clipboard protection against copied poisonous addresses</p>
+<p>Content scripts only run on supported block explorer domains (Etherscan, BscScan, PolygonScan, and 16 others) and on guardia.sh for Telegram authentication.</p>
 
 <h2>Disclaimer &amp; Limitation of Liability</h2>
 
@@ -126,10 +131,10 @@
 <p>While our detection algorithms cover the vast majority of known address poisoning patterns, <strong>no automated system can guarantee 100% detection of all threats.</strong> The absence of a warning does not mean a transaction or address is safe. If Guardia does not flag a particular transaction, it does not constitute an endorsement, guarantee, or recommendation that the address is legitimate or trustworthy.</p>
 
 <h3>False positives</h3>
-<p>Guardia may occasionally flag legitimate transactions as suspicious (false positives). Our detection is based on pattern analysis — certain legitimate transactions may match patterns commonly associated with address poisoning (e.g., small-value transfers, addresses with similar prefixes). <strong>A flagged transaction is not necessarily fraudulent.</strong> If Shield hides a transaction in "Guard" mode, you can switch to "Scan" mode to review all flagged transactions. Users should exercise their own judgment and verify flagged transactions independently before taking action.</p>
+<p>Guardia may occasionally flag legitimate transactions as suspicious (false positives). Our detection is based on pattern analysis — certain legitimate transactions may match patterns commonly associated with address poisoning (e.g., small-value transfers, addresses with similar prefixes). <strong>A flagged transaction is not necessarily fraudulent.</strong> If Shield hides a transaction in Hide mode, you can switch to Flag mode to review all flagged transactions. Users should exercise their own judgment and verify flagged transactions independently before taking action.</p>
 
 <h3>Hidden transactions</h3>
-<p>When Shield is set to "Hide" mode, flagged transactions are visually hidden from the page. <strong>Guardia does not delete, modify, or interfere with any blockchain data or explorer functionality.</strong> Hidden transactions still exist on the page and can be revealed at any time by switching to "Flag" mode or disabling Shield. We are not liable for any consequences arising from transactions being hidden from view, including missed legitimate transfers.</p>
+<p>When Shield is set to Hide mode, flagged transactions are visually hidden from the page. <strong>Guardia does not delete, modify, or interfere with any blockchain data or explorer functionality.</strong> Hidden transactions still exist on the page and can be revealed at any time by switching to Flag mode or disabling Shield. We are not liable for any consequences arising from transactions being hidden from view, including missed legitimate transfers.</p>
 
 <h3>Financial liability</h3>
 <p><strong>We do not accept any financial responsibility or liability for:</strong></p>
