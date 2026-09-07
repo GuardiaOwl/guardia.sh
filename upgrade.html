@@ -240,12 +240,25 @@
     document.querySelectorAll('.tier-cta.primary').forEach(function (b) {
       b.disabled = !enabled;
       if (!enabled) b.textContent = 'Coming soon';
+      else if (b.dataset.noCode) b.textContent = 'Get my payment link in Telegram';
     });
   }
 
   fetch(API + '/billing/plans').then(function (r) { return r.json(); }).then(function (d) {
     if (d && d.plans) { plans = d.plans; enabled = !!d.enabled; render(); }
   }).catch(function () {});
+
+  // Landed here without a personal code (nav link, shared URL): plans are
+  // tied to a Telegram account, so hand off to the bot — its deep link
+  // replies with a fresh coded URL back to this page
+  var TG_UPGRADE = 'https://t.me/GuardiaAlertsBot?start=upgrade';
+  if (!code) {
+    document.querySelectorAll('.tier-cta.primary').forEach(function (b) {
+      b.textContent = 'Get my payment link in Telegram';
+      b.dataset.noCode = '1';
+    });
+    showHint('Plans are tied to your Telegram account. Tap a plan and @GuardiaAlertsBot will send you a personal payment link — or open this page from the extension (Settings → Upgrade).');
+  }
 
   document.getElementById('billingToggle').addEventListener('click', function (e) {
     var btn = e.target.closest('button[data-period]');
@@ -260,7 +273,7 @@
   document.querySelectorAll('.tier-cta.primary').forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (!code) {
-        showHint('Open this page from the Guardia extension (Settings \u2192 Upgrade) or use /upgrade in @GuardiaAlertsBot \u2014 that\u2019s how we know which account to upgrade.');
+        window.open(TG_UPGRADE, '_blank');
         return;
       }
       var label = btn.textContent;

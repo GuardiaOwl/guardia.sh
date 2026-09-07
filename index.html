@@ -383,6 +383,7 @@ h1 .gradient {
       <a href="#features">Features</a>
       <a href="#how">How It Works</a>
       <a href="#telegram">Telegram</a>
+      <a href="#pricing">Pricing</a>
       <a class="btn-chrome" href="https://chromewebstore.google.com/detail/guardia/fbgchaielfdbgidnfijcihanjhjgjhkl" target="_blank">Install Extension</a>
     </div>
   </div>
@@ -563,6 +564,70 @@ h1 .gradient {
 </section>
 
 <!-- CTA -->
+<!-- PRICING -->
+<section class="features" id="pricing" style="padding-top:60px;">
+  <style>
+    .price-card { text-align: center; }
+    .price-card .tier { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
+    .price-card .amount { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 4px; }
+    .price-card .amount span { font-size: 14px; font-weight: 500; color: var(--text-dim); }
+    .price-card .per { font-size: 12px; color: var(--text-dim); min-height: 18px; margin-bottom: 18px; }
+    .price-card ul { list-style: none; padding: 0; margin: 0 0 22px; text-align: left; }
+    .price-card li { font-size: 14px; color: var(--text-mid); padding: 6px 0 6px 22px; position: relative; }
+    .price-card li::before { content: '\2713'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .price-card li b { color: var(--text); font-weight: 600; }
+    .price-card.featured { border-color: rgba(0, 229, 160, 0.35); }
+    .price-card .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--bg); background: var(--accent); border-radius: 999px; padding: 3px 10px; margin-bottom: 12px; }
+    .pricing-note { text-align: center; font-size: 13px; color: var(--text-dim); margin-top: 22px; }
+  </style>
+  <div class="container">
+    <div class="section-header">
+      <h2>Free forever. Upgrade when you outgrow it.</h2>
+      <p>Shield and tags are free for everyone. Paid plans add more monitored wallets and alerts — pay in crypto, no card needed.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card price-card">
+        <div class="tier">Free</div>
+        <div class="amount">$0</div>
+        <div class="per">forever</div>
+        <ul>
+          <li>Shield anti-poisoning on every explorer</li>
+          <li>50 address tags</li>
+          <li>10 monitored wallets</li>
+          <li>200 Telegram alerts / day</li>
+        </ul>
+        <a class="btn-outline" href="https://chromewebstore.google.com/detail/guardia/fbgchaielfdbgidnfijcihanjhjgjhkl" target="_blank" style="display:inline-block;text-decoration:none;">Install — it's free</a>
+      </div>
+      <div class="feature-card price-card featured">
+        <div class="badge">Most popular</div>
+        <div class="tier" style="color:var(--accent)">Basic</div>
+        <div class="amount">$9.99<span> / mo</span></div>
+        <div class="per">or $95.90 / year (−20%)</div>
+        <ul>
+          <li>Everything in Free</li>
+          <li><b>500 address tags</b></li>
+          <li><b>100 monitored wallets</b></li>
+          <li>5,000 Telegram alerts / day</li>
+        </ul>
+        <a class="btn-chrome" href="/upgrade" style="display:inline-block;text-decoration:none;">Upgrade to Basic</a>
+      </div>
+      <div class="feature-card price-card">
+        <div class="tier" style="color:var(--accent2)">Premium</div>
+        <div class="amount">$99.90<span> / mo</span></div>
+        <div class="per">or $959 / year (−20%)</div>
+        <ul>
+          <li>Everything in Basic</li>
+          <li><b>5,000 address tags</b></li>
+          <li><b>1,000 monitored wallets</b></li>
+          <li>20,000 Telegram alerts / day</li>
+        </ul>
+        <a class="btn-outline" href="/upgrade" style="display:inline-block;text-decoration:none;">Upgrade to Premium</a>
+      </div>
+    </div>
+    <p class="pricing-note">Plans are tied to your Telegram account. Upgrade from the extension (Settings &rarr; Upgrade) or send <b>/upgrade</b> to <a href="https://t.me/GuardiaAlertsBot" style="color:var(--accent);text-decoration:none;">@GuardiaAlertsBot</a> &mdash; USDT, BTC, TON, SOL, TRX and 120+ coins accepted via Cryptomus.</p>
+  </div>
+</section>
+
 <section class="cta">
   <div class="container">
     <div class="cta-box">
@@ -580,7 +645,7 @@ h1 .gradient {
 <footer>
   <div class="container">
     <p style="margin-bottom:8px;">Guardia — Every dia, every chain</p>
-    <p><a href="/privacy.html">Privacy Policy</a> &middot; <a href="https://github.com/GuardiaOwl">GitHub</a> &middot; <a href="https://chromewebstore.google.com/detail/guardia/fbgchaielfdbgidnfijcihanjhjgjhkl" target="_blank">Chrome Web Store</a> &middot; <a href="https://t.me/GuardiaAlertsBot">Telegram</a> &middot; <a href="https://x.com/GuardiaOwl">Twitter</a></p>
+    <p><a href="/privacy.html">Privacy Policy</a> &middot; <a href="/upgrade">Pricing</a> &middot; <a href="https://github.com/GuardiaOwl">GitHub</a> &middot; <a href="https://chromewebstore.google.com/detail/guardia/fbgchaielfdbgidnfijcihanjhjgjhkl" target="_blank">Chrome Web Store</a> &middot; <a href="https://t.me/GuardiaAlertsBot">Telegram</a> &middot; <a href="https://x.com/GuardiaOwl">Twitter</a></p>
   </div>
 </footer>
 
