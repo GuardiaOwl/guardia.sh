@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardia — Upgrade</title>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.upgrade-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 140px 24px 80px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.upgrade-content h1 {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.upgrade-sub { color: var(--text-mid); font-size: 17px; margin-bottom: 56px; }
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  text-align: left;
+}
+.tier-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  position: relative;
+}
+.tier-card.featured {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 60px rgba(0, 229, 160, 0.08);
+}
+.tier-card.featured::before {
+  content: 'RECOMMENDED';
+  position: absolute;
+  top: -11px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #06060f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 50rem;
+}
+.tier-name { font-size: 14px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; }
+.tier-price { font-size: 42px; font-weight: 800; margin: 10px 0 2px; }
+.tier-price span { font-size: 15px; font-weight: 500; color: var(--text-dim); }
+.tier-feats { list-style: none; margin: 24px 0 28px; padding: 0; }
+.tier-feats li { padding: 7px 0; color: var(--text-mid); font-size: 15px; }
+.tier-feats li::before { content: '✓  '; color: var(--accent); font-weight: 700; }
+.tier-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+.tier-cta.primary { background: var(--accent); color: #06060f; }
+.tier-cta.primary:hover { box-shadow: 0 6px 30px rgba(0, 229, 160, 0.35); transform: translateY(-1px); }
+.tier-cta.primary:disabled { opacity: 0.6; cursor: wait; transform: none; }
+.tier-cta.ghost { background: transparent; border: 1px solid var(--border); color: var(--text-dim); cursor: default; }
+.pay-note { margin-top: 28px; color: var(--text-dim); font-size: 13.5px; }
+.pay-note b { color: var(--text-mid); font-weight: 600; }
+.upgrade-hint {
+  margin-top: 18px;
+  padding: 12px 18px;
+  display: none;
+  border-radius: 12px;
+  font-size: 14px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: var(--accent3);
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow-orb g1"></div>
+<div class="glow-orb g2"></div>
+
+<nav>
+  <div class="inner">
+    <a href="/" class="logo">
+      <img class="logo-icon" src="icons/icon-128.png" alt="Guardia" style="background:none;">
+      <span class="logo-wordmark">Guar<span>dia</span></span>
+    </a>
+    <div class="links">
+      <a href="/">&larr; Back to Home</a>
+    </div>
+  </div>
+</nav>
+
+<div class="upgrade-content">
+  <h1>Upgrade your <span style="color:var(--accent)">Guardia</span></h1>
+  <p class="upgrade-sub">More monitored wallets, more real-time alerts. Pay with crypto — USDT, BTC, TON, SOL, TRX and 120+ other coins.</p>
+
+  <div class="tiers">
+    <div class="tier-card">
+      <div class="tier-name">Free</div>
+      <div class="tier-price">$0<span> / forever</span></div>
+      <ul class="tier-feats">
+        <li>Unlimited address tags</li>
+        <li>Shield anti-poisoning on every explorer</li>
+        <li>10 monitored wallets</li>
+        <li>200 Telegram alerts / day</li>
+      </ul>
+      <button class="tier-cta ghost">Your current plan</button>
+    </div>
+
+    <div class="tier-card featured">
+      <div class="tier-name" style="color:var(--accent)">Premium</div>
+      <div class="tier-price" id="premiumPrice">$9.99<span> / month</span></div>
+      <ul class="tier-feats">
+        <li>Everything in Free</li>
+        <li><b style="color:var(--text)">100 monitored wallets</b></li>
+        <li>5,000 Telegram alerts / day</li>
+        <li>All 8 chains per wallet</li>
+      </ul>
+      <button class="tier-cta primary" id="payBtn">Pay with crypto</button>
+    </div>
+  </div>
+
+  <div class="upgrade-hint" id="hint"></div>
+  <p class="pay-note">Payments are processed by <b>Cryptomus</b> on their secure checkout page — Guardia never touches your funds or keys. The invoice is valid for 3 hours. Your plan activates automatically within a minute of payment confirmation, and you'll get a message from <b>@GuardiaAlertsBot</b>.</p>
+</div>
+
+<footer>
+  <div class="container">
+    <p style="margin-bottom:8px;">Guardia — Every dia, every chain</p>
+    <p><a href="/">Home</a> &middot; <a href="https://github.com/GuardiaOwl">GitHub</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="https://t.me/GuardiaAlertsBot">Telegram</a> &middot; <a href="https://x.com/GuardiaOwl">Twitter</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var API = 'https://api.guardia.sh';
+  // One-time code from the extension lives in the URL fragment — it never
+  // reaches server logs or referrers
+  var code = (location.hash.match(/c=([a-f0-9]+)/) || [])[1] || '';
+  var payBtn = document.getElementById('payBtn');
+  var hint = document.getElementById('hint');
+
+  function showHint(text) {
+    hint.textContent = text;
+    hint.style.display = 'block';
+  }
+
+  // Live plan data (price may change server-side)
+  fetch(API + '/billing/plans').then(function (r) { return r.json(); }).then(function (d) {
+    if (d && d.plans && d.plans.premium) {
+      document.getElementById('premiumPrice').innerHTML = '$' + d.plans.premium.priceUsd + '<span> / month</span>';
+    }
+    if (d && !d.enabled) {
+      payBtn.disabled = true;
+      payBtn.textContent = 'Coming soon';
+    }
+  }).catch(function () {});
+
+  payBtn.addEventListener('click', function () {
+    if (!code) {
+      showHint('Open this page from the Guardia extension (Settings → Upgrade) or use /upgrade in @GuardiaAlertsBot — that’s how we know which account to upgrade.');
+      return;
+    }
+    payBtn.disabled = true;
+    payBtn.textContent = 'Creating invoice…';
+    fetch(API + '/billing/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: code, plan: 'premium' }),
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.url) { location.href = d.url; return; }
+      payBtn.disabled = false;
+      payBtn.textContent = 'Pay with crypto';
+      showHint((d && d.error) || 'Something went wrong — please try again.');
+    }).catch(function () {
+      payBtn.disabled = false;
+      payBtn.textContent = 'Pay with crypto';
+      showHint('Network error — please try again.');
+    });
+  });
+})();
+</script>
+</body>
+</html>
